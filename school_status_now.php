@@ -57,13 +57,12 @@ try {
                 $d_count_down = $d_count_down + 1;
             }
 
-
-        $sch_data[$sch_count]['name'] = $datainfo['sysName'];
-        $sch_data[$sch_count]['status'] = $school_status;
-        $sch_data[$sch_count]['div_class'] = $div_class;
-        $sch_data[$sch_count]['timestamp'] = $datainfo2['timestamp'];
-        $sch_data[$sch_count]['ip'] = $datainfo2['hostname'];
-        $sch_data[$sch_count]['features'] = $datainfo2['features'];
+            $sch_data[$sch_count]['name'] = $datainfo['sysName'];
+            $sch_data[$sch_count]['status'] = $school_status;
+            $sch_data[$sch_count]['div_class'] = $div_class;
+            $sch_data[$sch_count]['timestamp'] = $datainfo2['timestamp'];
+            $sch_data[$sch_count]['ip'] = $datainfo2['hostname'];
+            $sch_data[$sch_count]['features'] = $datainfo2['features'];
             $sch_count++;
             //echo "<div class=".  $div_class  .">";
             //echo  $datainfo['sysName'].$school_status;
@@ -87,20 +86,20 @@ $run_time = microtime(true) - $time_start;
 
 //顯示統計
 $d_count_total = $d_count_up + $d_count_down + $d_count_check;
-//echo "<div class=device_count>檢測總數：" . $d_count_total . "　正常：" . $d_count_up . "　待確認：" . $d_count_check . "　異常：" . $d_count_down . "</div>"; 
 
-// 變數說明
-//$sch_data[$i]['name'] = 行政區-學校名稱
-//$sch_data[$i]['status'] = 狀態[正常|異常|待確認]
-//$sch_data[$i]['div_class'] = div用的class [up|down|check]
-//$sch_data[$i]['timestamp'] = 時間戳記[yyyy-mm-dd hh-mm-ss]
-//$sch_data[$i]['ip'] = 檢測IP
-//$sch_data[$i]['features'] = 電路編號
-//$run_time = 執行時間
-//$d_count_total = 檢測總數
-//$d_count_up = 正常總數
-//$d_count_check = 待確認總數
-//$d_count_down = 異常總數
+/* 變數說明
+$sch_data[$i]['name'] = 行政區-學校名稱
+$sch_data[$i]['status'] = 狀態[正常|異常|待確認]
+$sch_data[$i]['div_class'] = div用的class [up|down|check]
+$sch_data[$i]['timestamp'] = 時間戳記[yyyy-mm-dd hh-mm-ss]
+$sch_data[$i]['ip'] = 檢測IP
+$sch_data[$i]['features'] = 電路編號
+$run_time = 執行時間
+$d_count_total = 檢測總數
+$d_count_up = 正常總數
+$d_count_check = 待確認總數
+$d_count_down = 異常總數
+*/
 ?>
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
@@ -120,18 +119,18 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
         width: 500px;
         vertical-align: left;
         text-align: left;
-        font-family:Microsoft JhengHei;
+        font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "新細明體", sans-serif;
         font-size:small;
         float:;
     }
-    
+
     /* 各校狀態表採 CSS Grid */
     .device_table {
       display: grid;
       justify-items: start;
       grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
     }
-    
+
     .device {
         border-color:#888888;
         border-width:1px; 
@@ -147,11 +146,12 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
         height: 46px;
         vertical-align: middle;
         text-align: center;
-        font: italic Helvetica, Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "黑體-繁", "Heiti TC", "微軟正黑體", "Microsoft JhengHei", sans-serif;
+        font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "新細明體", sans-serif;
         font-size:small;
+        justify-self: center;
     }
-    
-    .up { 
+
+    .up {
         background-color: #00FF00;
     }
 
@@ -159,37 +159,37 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
         background-color: #FFFF77;
     }
 
-    
     .down {
         background-color: #FF0000;
         color: #FFFFFF;
         font-weight:bold; 
     }
-       
+
     /* 選單列採用 flexbox */
     .fbox {
         display:flex;
         flex-wrap: wrap;
     }
-       
+
     .push {
         align-self: center;
         margin-left: auto;
         margin-right: 10px;
     }
 
-    /* 寬度小於 740px 換行後右推改左推 */
+    /* 寬度小於 740px 換行後右推改左推 小於 500px 說明區塊不限定寬度*/
     @media screen and (max-width: 740px) { .push { margin-left: 10px; } }
+    @media screen and (max-width: 500px) { .readme { width: auto; } }
     </style>
 </head>
 <body>
     <br><br>
     <div class="readme">
-        說明：本頁面建置於市網中心，檢測各校與市網介接之 L3 路由設備
-        <br>檢測方式：每隔 60 秒 ping 1 次，ping 回應時間高於 100ms 即為 ping loss<br>
-        <br>正常：　最近連續兩次 ping 皆沒有loss 則為正常，顯示綠色
-        <br>待確認：最近連續兩次 ping 中有1次 loss 則為待確認，顯示淺黃色
-        <br>異常：　最近連續兩次 ping 皆 loss 則為異常，顯示紅色
+        說明：本頁面建置於市網中心，檢測各校與市網介接之 L3 路由設備<br>
+        檢測方式：每隔 60 秒 ping 1 次，ping 回應時間高於 100ms 即為 ping loss<br><br>
+        正常：　最近連續兩次 ping 皆沒有loss 則為正常，顯示綠色<br>
+        待確認：最近連續兩次 ping 中有1次 loss 則為待確認，顯示淺黃色<br>
+        異常：　最近連續兩次 ping 皆 loss 則為異常，顯示紅色
     </div>
     <br><br>
     <div class="fbox">
@@ -207,7 +207,7 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
     <br>
     <div class="device_table" id="device_table">
         <?php foreach($sch_data as $i => $value){ ?>
-        <div class="device <?php echo $value['div_class']; ?>"><?php printf("%s%s<br>檢測時間：%s\n",$value['name'], $value['status'], $value['timestamp']); ?></div>
+        <div class="device <?php echo $value['div_class']; ?>"><?php printf("%s%s<br>檢測時間：%s",$value['name'], $value['status'], $value['timestamp']); ?></div>
         <?php } ?>
     </div>
     <script>
@@ -226,7 +226,7 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
             }
         }
     }
- 
+
     function showDown() {
         var lnk_all, lnk_down, div, i;
         lnk_all = document.getElementById("showAll");
@@ -238,7 +238,7 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
             div[i].style.display = "none";
         }
     }
-    
+
     function showAll() {
         var lnk_all, lnk_down, div, i;
         lnk_all = document.getElementById("showAll");
