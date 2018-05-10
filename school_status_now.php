@@ -133,6 +133,7 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
     }
     
     .device {
+        border-color:#888888;
         border-width:1px; 
         border-style:solid;
         margin-left:2px;
@@ -151,11 +152,18 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
     }
     
     .up { 
-        background-color: rgba(66, 244, 164, 1);
+        background-color: #00FF00;
     }
+
+    .check {
+        background-color: #FFFF77;
+    }
+
     
     .down {
-        background-color: rgba(244, 66, 66, 1); 
+        background-color: #FF0000;
+        color: #FFFFFF;
+        font-weight:bold; 
     }
        
     /* 選單列採用 flexbox */
@@ -199,7 +207,7 @@ $d_count_total = $d_count_up + $d_count_down + $d_count_check;
     <br>
     <div class="device_table" id="device_table">
         <?php foreach($sch_data as $i => $value){ ?>
-        <div class="device <?php echo $value['div_class']; ?>"><?php printf("%s%s正常<br>檢測時間：%s\n",$value['name'], $value['status'], $value['timestamp']); ?></div>
+        <div class="device <?php echo $value['div_class']; ?>"><?php printf("%s%s<br>檢測時間：%s\n",$value['name'], $value['status'], $value['timestamp']); ?></div>
         <?php } ?>
     </div>
     <script>
