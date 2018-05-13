@@ -73,7 +73,6 @@ try {
                 $loss_hours = floor($disconnect_time / 3600);
                 $loss_minutes = ($disconnect_time % 60);
                 $add_text = " <br>最後上線時間：" . $time_last_alive['timestamp'] . "<br>已斷線" . $loss_hours . "小時" . $loss_minutes . "分鐘"   ;
-
             }
 
             $sch_data[$sch_count]['name'] = $datainfo['sysName'];
@@ -133,16 +132,13 @@ $d_count_down = 異常總數
     <style type="text/css">
     /*定義說明文字*/
     .readme {
-        border-width:1px;
-        margin:0px auto;
-        border-style:solid;
+        margin: 0px;
+        padding: 10px;
         background-color: #99FFFF;
-        width: 500px;
-        vertical-align: left;
-        text-align: left;
+        border-width: 1px; 
+        border-style: solid;
+        width: 100%;
         font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "新細明體", sans-serif;
-        font-size:small;
-        float:;
     }
 
     /* 各校狀態表採 CSS Grid */
@@ -153,13 +149,13 @@ $d_count_down = 異常總數
     }
 
     .device {
-        border-color:#888888;
-        border-width:1px; 
-        border-style:solid;
-        margin-left:2px;
-        margin-right:2px;
-        margin-top:2px;
-        margin-bottom:2px;
+        border-color: #888888;
+        border-width: 1px; 
+        border-style: solid;
+        margin-left: 2px;
+        margin-right: 2px;
+        margin-top: 2px;
+        margin-bottom: 2px;
         border-radius: 3%; 
         -webkit-border-radius: 3%; 
         -moz-border-radius: 3%;
@@ -168,7 +164,7 @@ $d_count_down = 異常總數
         vertical-align: middle;
         text-align: center;
         font-family: Arial, "文泉驛正黑", "WenQuanYi Zen Hei", "儷黑 Pro", "LiHei Pro", "微軟正黑體", "Microsoft JhengHei", "新細明體", sans-serif;
-        font-size:small;
+        font-size: small;
         justify-self: center;
     }
 
@@ -183,13 +179,14 @@ $d_count_down = 異常總數
     .down {
         background-color: #FF0000;
         color: #FFFFFF;
-        font-weight:bold; 
+        font-weight: bold; 
     }
 
     /* 選單列採用 flexbox */
     .fbox {
-        display:flex;
+        display: flex;
         flex-wrap: wrap;
+        margin: 10px;
     }
 
     .push {
@@ -204,16 +201,8 @@ $d_count_down = 異常總數
     </style>
 </head>
 <body>
-    <br><br>
-    <div class="readme">
-<?php echo $time_last_alive['timestamp']; ?> 
-        說明：本頁面建置於市網中心，檢測各校與市網介接之 L3 路由設備<br>
-        檢測方式：每隔 60 秒 ping 1 次，ping 回應時間高於 100ms 即為 ping loss<br><br>
-        正常：　最近連續兩次 ping 皆沒有loss 則為正常，顯示綠色<br>
-        待確認：最近連續兩次 ping 中有1次 loss 則為待確認，顯示淺黃色<br>
-        異常：　最近連續兩次 ping 皆 loss 則為異常，顯示紅色
-    </div>
-    <br><br>
+    <br>
+    <h1 align="center">北市各校路由設備狀態</h1>
     <div class="fbox">
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -222,14 +211,25 @@ $d_count_down = 異常總數
             <li class="nav-item">
                 <a class="nav-link" href="#" onclick="showDown()" id="showDown">異常</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showHelp()">說明</a>
+            </li>
        </ul>
         <input class="form-inline" placeholder=" 快速搜尋 " aria-label="快速搜尋" id="search" onkeyup="keyFilter()" type="text">
         <div class="push">檢測總數：<?php echo $d_count_total;?>　正常：<?php echo $d_count_up;?>　待確認：<?php echo $d_count_check;?>　異常：<?php echo $d_count_down;?></div>
     </div>
-    <br>
+    <div class="fbox">
+        <div class="readme" style="display:none" id="help">
+            說明：本頁面建置於市網中心，檢測各校與市網介接之 L3 路由設備<br>
+            檢測方式：每隔 60 秒 ping 1 次，ping 回應時間高於 100ms 即為 ping loss<br><br>
+            正常：　最近連續兩次 ping 皆沒有loss 則為正常，顯示綠色<br>
+            待確認：最近連續兩次 ping 中有1次 loss 則為待確認，顯示淺黃色<br>
+            異常：　最近連續兩次 ping 皆 loss 則為異常，顯示紅色
+        </div>
+    </div>
     <div class="device_table" id="device_table">
         <?php foreach($sch_data as $i => $value){ ?>
-        <div <?php echo $value['div_onmouseover']; ?> <?php echo $value['div_onmouseout']; ?>  class="device <?php echo $value['div_class']; ?>"><?php printf("%s%s<br>檢測時間：%s",$value['name'], $value['status'], $value['timestamp']); ?> </div>
+            <div <?php echo $value['div_onmouseover']; ?> <?php echo $value['div_onmouseout']; ?>  class="device <?php echo $value['div_class']; ?>"><?php printf("%s%s<br>檢測時間：%s",$value['name'], $value['status'], $value['timestamp']); ?> </div>
         <?php } ?>
     </div>
     <script>
@@ -270,6 +270,16 @@ $d_count_down = 異常總數
         lnk_down.className = "nav-link";
         for (i = 0; i < div.length; i++) {
             div[i].style.display = "";
+        }
+    }
+
+    function showHelp() {
+        var help, i;
+        help = document.getElementById("help");
+        if (help.style.display == "none"){
+            help.style.display = "flex";
+        } else { 
+            help.style.display = "none";
         }
     }
     </script>
