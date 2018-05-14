@@ -72,7 +72,11 @@ try {
                 $disconnect_time = ($now_time_tostamp - $last_time_tostamp);
                 $loss_hours = floor($disconnect_time / 3600);
                 $loss_minutes = ($disconnect_time % 60);
-                $add_text = " <br>最後上線時間：" . $time_last_alive['timestamp'] . "<br>已斷線" . $loss_hours . "小時" . $loss_minutes . "分鐘"   ;
+                if(empty($time_last_alive)){
+                    $add_text = " <br>從未上線";
+                } else {
+                    $add_text = " <br>最後上線時間：" . $time_last_alive['timestamp'] . "<br>已斷線" . $loss_hours . "小時" . $loss_minutes . "分鐘";
+                }
             }
 
             $sch_data[$sch_count]['name'] = $datainfo['sysName'];
@@ -84,12 +88,6 @@ try {
             $sch_data[$sch_count]['ip'] = $datainfo2['hostname'];
             $sch_data[$sch_count]['features'] = $datainfo2['features'];
             $sch_count++;
-            //echo "<div class=".  $div_class  .">";
-            //echo  $datainfo['sysName'].$school_status;
-            //echo "<br>檢測時間：".$datainfo2['timestamp'];
-            //echo "<br>檢測IP：".$datainfo2['hostname'];
-            //echo "<br>電路編號：".$datainfo2['features'];
-            //echo "</div>";
         }
         $query2 = null;
     }
@@ -195,7 +193,7 @@ $d_count_down = 異常總數
         margin-right: 10px;
     }
 
-    /* 寬度小於 740px 換行後右推改左推 小於 500px 說明區塊不限定寬度*/
+    /* 寬度小於 740px 換行後右推改左推 小於 500px 說明區塊不限定寬度 */
     @media screen and (max-width: 740px) { .push { margin-left: 10px; } }
     @media screen and (max-width: 500px) { .readme { width: auto; } }
     </style>
