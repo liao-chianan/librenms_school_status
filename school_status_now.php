@@ -71,11 +71,11 @@ try {
                 $now_time_tostamp = time();
                 $disconnect_time = ($now_time_tostamp - $last_time_tostamp);
                 $loss_hours = floor($disconnect_time / 3600);
-                $loss_minutes = ($disconnect_time % 60);
+                $loss_minutes = floor(($disconnect_time % 3600)/60);
                 if(empty($time_last_alive)){
                     $add_text = " <br>從未上線";
                 } else {
-                    $add_text = " <br>最後上線時間：" . $time_last_alive['timestamp'] . "<br>已斷線" . $loss_hours . "小時" . $loss_minutes . "分鐘";
+                    $add_text = " <br><br>最後上線時間：" . $time_last_alive['timestamp'] . "<br>已斷線" . $loss_hours . "小時" . $loss_minutes . "分鐘";
                 }
             }
 
