@@ -50,8 +50,8 @@ try {
             if ($row['sum_loss'] == 100) {
                 $school_status="待確認";
                 $div_class="check";
-                $div_onmouseover="";
-                $div_onmouseout="";
+                $div_onmouseover=' onmouseover="this.style.background = \'url(checking_01.gif)\'; this.style.width = \'236px\';  this.style.height = \'140px\';  "';
+                $div_onmouseout=' onmouseout="this.style.background = \'#FF0000\'; this.style.width = \'220px\';  this.style.height = \'46px\';"';
                 $add_text = "";
                 $d_count_check = $d_count_check + 1;
             }
@@ -73,7 +73,7 @@ try {
                 $loss_hours = floor($disconnect_time / 3600);
                 $loss_minutes = floor(($disconnect_time % 3600)/60);
                 if(empty($time_last_alive)){
-                    $add_text = " <br>從未上線";
+                    $add_text = " <br><br>從未上線";
                 } else {
                     $add_text = " <br><br>最後上線時間：" . $time_last_alive['timestamp'] . "<br>已斷線" . $loss_hours . "小時" . $loss_minutes . "分鐘";
                 }
