@@ -29,9 +29,9 @@ try {
         $sql2 = "select devices.device_id,devices.features,devices.sysName,devices.hostname,device_perf.timestamp,device_perf.loss  from devices JOIN device_perf on devices.device_id=device_perf.device_id  where  device_perf.device_id =". $datainfo['device_id']. " order by device_perf.timestamp desc limit 1;";
         $query2 = $pdo->query($sql2);
 
-        //計算每一部裝置最近兩筆的 ping 資料
+        //計算每一部裝置最近三筆的 ping 資料
         while ($datainfo2 = $query2->fetch()) {
-            $query3 = $pdo->query("SELECT sum(loss) as sum_loss from(SELECT loss FROM device_perf  where device_id =".$datainfo['device_id'] ." order by device_perf.timestamp desc limit 2) as subquery");
+            $query3 = $pdo->query("SELECT sum(loss) as sum_loss from(SELECT loss FROM device_perf  where device_id =".$datainfo['device_id'] ." order by device_perf.timestamp desc limit 3) as subquery");
             $row = $query3->fetch();
             $query3 = null;
             //echo $row['sum_loss'];
@@ -46,18 +46,18 @@ try {
                 $d_count_up = $d_count_up + 1;
             }
 
-            //總和為 100 是待確認
-            if ($row['sum_loss'] == 100) {
+            //總和大於等於 100 且小於300 為待確認
+            if ($row['sum_loss'] >= 100 and $row['sum_loss'] < 300) {
                 $school_status="待確認";
                 $div_class="check";
                 $div_onmouseover=' onmouseover="this.style.background = \'url(checking_01.gif)\'; this.style.width = \'236px\';  this.style.height = \'140px\';  "';
-                $div_onmouseout=' onmouseout="this.style.background = \'#FF0000\'; this.style.width = \'220px\';  this.style.height = \'46px\';"';
+                $div_onmouseout=' onmouseout="this.style.background = \'#FFFF77\'; this.style.width = \'220px\';  this.style.height = \'46px\';"';
                 $add_text = "";
                 $d_count_check = $d_count_check + 1;
             }
 
-            //總和 200 代表連續兩次 ping 失敗
-            if ($row['sum_loss'] >= 200) {
+            //總和 300 代表連續三次 ping 失敗
+            if ($row['sum_loss'] >= 300) {
                 $school_status="異常";
                 $div_class="down";
                 $d_count_down = $d_count_down + 1;
@@ -220,9 +220,9 @@ $d_count_down = 異常總數
         <div class="readme" style="display:none" id="help">
             說明：本頁面建置於市網中心，檢測各校與市網介接之 L3 路由設備<br>
             檢測方式：每隔 60 秒 ping 1 次，ping 回應時間高於 100ms 即為 ping loss<br><br>
-            正常：　最近連續兩次 ping 皆沒有loss 則為正常，顯示綠色<br>
-            待確認：最近連續兩次 ping 中有1次 loss 則為待確認，顯示淺黃色<br>
-            異常：　最近連續兩次 ping 皆 loss 則為異常，顯示紅色
+            正常：　最近連續三次 ping 皆沒有loss 則為正常，顯示綠色<br>
+            待確認：最近連續三次 ping 中有1~2次 loss 則為待確認，顯示淺黃色<br>
+            異常：　最近連續三次 ping 皆 loss 則為異常，顯示紅色
         </div>
     </div>
     <div class="device_table" id="device_table">
